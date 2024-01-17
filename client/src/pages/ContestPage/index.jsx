@@ -100,7 +100,6 @@ function ContestPage() {
               <TextField
                 label="Buscar temática"
                 variant="outlined"
-                autoComplete="off"
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
                 sx={{
@@ -128,6 +127,7 @@ function ContestPage() {
                   marginBottom: '',
                   '&:hover': {
                     backgroundColor: 'rgba(255, 255, 255, 0.25)',
+                    boxShadow: 'inset 0 0 0 2px white',
                   },
                 }}
               />
