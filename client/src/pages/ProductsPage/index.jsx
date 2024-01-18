@@ -30,9 +30,12 @@ function ProductsPage() {
   if (loading && loadingContest) return <CircularProgress />
 
   const matchedDesigns = designs.filter(
-    (design) => design.contest === contestId
+    (design) =>
+      design.contest === contestId &&
+      design.approvalDate &&
+      (!design.isDeleted || design.approvalDate > design.isDeleted)
   )
-  console.log(matchedDesigns)
+  console.log(contest)
 
   const filteredAuthor = matchedDesigns.filter((design) => {
     return (
@@ -76,7 +79,8 @@ function ProductsPage() {
             <Typography
               sx={{
                 color: 'white',
-                fontSize: '30px',
+                fontSize: '40px',
+                fontWeight: 600,
                 marginTop: '-170px',
                 marginBottom: '100px',
                 zIndex: 1,
@@ -92,7 +96,13 @@ function ProductsPage() {
       <Container disableGutters sx={{ marginTop: '50px' }}>
         <Grid container spacing={2}>
           <Grid item xs={6}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: '100px',
+              }}
+            >
               <TextField
                 label="Buscar autor"
                 variant="outlined"
@@ -115,15 +125,15 @@ function ProductsPage() {
                     opacity: 0,
                     transition: 'all 0.1s ease-in',
                   },
-                  backgroundColor: 'rgba(255, 255, 255, 0.15)',
-                  borderRadius: '20px',
+                  backgroundColor: '#FDFDFD',
+                  borderRadius: '12px',
                   outline: 'none',
                   width: '700px',
                   height: '40px',
                   marginBottom: '',
+                  boxShadow: 'inset 0 0 0 1px black',
                   '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.25)',
-                    boxShadow: 'inset 0 0 0 2px white',
+                    boxShadow: 'inset 0 0 0 1.5px black',
                   },
                 }}
               />
@@ -134,18 +144,31 @@ function ProductsPage() {
                   marginLeft: '-30px',
                   alignSelf: 'center',
                   paddingRight: '5px',
+                  zIndex: 1,
                 }}
               />
             </div>
           </Grid>
 
           <Grid item xs={6} container justifyContent="flex-end">
+            <Button
+              variant="contained"
+              component={Link}
+              to="/"
+              sx={{ backgroundColor: '#D7DBDD', height: '29%', color: 'black' }}
+            >
+              Ir a Concursos
+            </Button>
             <Link to={`/product/add_desing/${contestId}`}>
               <Button
                 aria-label="add"
                 startIcon={<AddIcon />}
                 sx={{
                   marginLeft: '15px',
+                  mr: '40px',
+                  border: 'solid 1px',
+                  backgroundColor: '#FDFDFD',
+                  '&:hover': { backgroundColor: '#FDFDFD' },
                 }}
               >
                 Añadir diseño
@@ -158,12 +181,10 @@ function ProductsPage() {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-          gap: '40px',
-          marginTop: '50px',
+          gridTemplateColumns: `repeat(auto-fill, minmax(345px, 1fr))`,
+          gap: '20px',
           marginLeft: '20px',
-          marginRight: '20px',
-          marginBottom: '100px',
+          alignItems: 'center',
         }}
       >
         {filteredAuthor.length > 0 ? (
@@ -175,6 +196,8 @@ function ProductsPage() {
             sx={{
               color: 'white',
               fontSize: '30px',
+              marginTop: '-170px',
+              marginBottom: '100px',
               zIndex: 1,
               filter: 'drop-shadow(0px 5px 5px rgba(0, 0, 0, 1))',
             }}
